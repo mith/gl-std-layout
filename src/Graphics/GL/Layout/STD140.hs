@@ -106,7 +106,7 @@ instance STD140 a => STD140 (V2 a) where
                       <*> peekByteOff140 ap (sizeOf140 (undefined :: a))
     poke140 p (V2 a b) = let ap = castPtr $ alignedPtr p :: Ptr a
                          in poke140 ap a 
-                         >> pokeByteOff140 ap (sizeOf140 (undefined :: a)) b
+                         >> pokeByteOff140 ap (sizeOf140 b) b
     peekElemOff140 p o = peekByteOff140 p (o * (alignOffset 16 $ sizeOf140 (undefined :: a)))
     pokeElemOff140 p o = pokeByteOff140 p (o * (alignOffset 16 $ sizeOf140 (undefined :: a)))
 
@@ -114,13 +114,15 @@ instance STD140 a => STD140 (V3 a) where
     sizeOf140 _ = 3 * sizeOf140 (undefined :: a)
     alignment140 _ = 4 * max 4 (sizeOf140 (undefined :: a))
     peek140 p = let ap = castPtr $ alignedPtr p :: Ptr a
+                    sz = sizeOf140 (undefined :: a)
                 in V3 <$> peek140 ap
-                      <*> peekByteOff140 ap (sizeOf140 (undefined :: a))
-                      <*> peekByteOff140 ap (2 * sizeOf140 (undefined :: a))
+                      <*> peekByteOff140 ap sz
+                      <*> peekByteOff140 ap (2 * sz)
     poke140 p (V3 a b c) = let ap = castPtr $ alignedPtr p :: Ptr a
+                               sz = sizeOf140 a
                            in poke140 ap a 
-                              >> pokeByteOff140 ap (sizeOf140 (undefined :: a)) b
-                              >> pokeByteOff140 ap (2 * sizeOf140 (undefined :: a)) c
+                              >> pokeByteOff140 ap sz b
+                              >> pokeByteOff140 ap (2 * sz) c
     peekElemOff140 p o = peekByteOff140 p (o * (alignOffset 16 $ sizeOf140 (undefined :: a)))
     pokeElemOff140 p o = pokeByteOff140 p (o * (alignOffset 16 $ sizeOf140 (undefined :: a)))
 
@@ -128,15 +130,17 @@ instance STD140 a => STD140 (V4 a) where
     sizeOf140 _ = 4 * sizeOf140 (undefined :: a)
     alignment140 _ = 4 * max 4 (sizeOf140 (undefined :: a))
     peek140 p = let ap = castPtr $ alignedPtr p :: Ptr a
+                    sz = sizeOf140 (undefined :: a)
                 in V4 <$> peek140 ap
-                      <*> peekByteOff140 ap (sizeOf140 (undefined :: a))
-                      <*> peekByteOff140 ap (2 * sizeOf140 (undefined :: a))
-                      <*> peekByteOff140 ap (3 * sizeOf140 (undefined :: a))
+                      <*> peekByteOff140 ap sz
+                      <*> peekByteOff140 ap (2 * sz)
+                      <*> peekByteOff140 ap (3 * sz)
     poke140 p (V4 a b c d) = let ap = castPtr $ alignedPtr p :: Ptr a
+                                 sz = sizeOf140 a
                              in poke140 ap a
-                                >> pokeByteOff140 ap (sizeOf140 a) b
-                                >> pokeByteOff140 ap (2 * sizeOf140 b) c
-                                >> pokeByteOff140 ap (3 * sizeOf140 c) d
+                                >> pokeByteOff140 ap sz b
+                                >> pokeByteOff140 ap (2 * sz) c
+                                >> pokeByteOff140 ap (3 * sz) d
     peekElemOff140 p o = peekByteOff140 p (o * (alignOffset 16 $ sizeOf140 (undefined :: a)))
     pokeElemOff140 p o = pokeByteOff140 p (o * (alignOffset 16 $ sizeOf140 (undefined :: a)))
 
