@@ -1,0 +1,3 @@
+Typeclass for the OpenGL std140 memory layout, used in uniform and shader buffers.
+
+unfinished
